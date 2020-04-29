@@ -1,0 +1,10 @@
+read a
+a=5+6-8*2
+print a
+b=sqrt(8*(5))
+c=4(6)
+print b
+print c
+read e
+print e
+

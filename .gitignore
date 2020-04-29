@@ -1,0 +1,4 @@
+/gen/
+/out/
+__pycache__/*
+.idea/*
