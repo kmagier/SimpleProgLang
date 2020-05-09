@@ -1,4 +1,5 @@
-/gen/
-/out/
-__pycache__/*
+/gen
+/out
+**/__pycache__/
 .idea/*
+/test/

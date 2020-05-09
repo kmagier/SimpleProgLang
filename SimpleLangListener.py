@@ -62,6 +62,15 @@ class SimpleLangListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by SimpleLangParser#variableExpr.
+    def enterVariableExpr(self, ctx:SimpleLangParser.VariableExprContext):
+        pass
+
+    # Exit a parse tree produced by SimpleLangParser#variableExpr.
+    def exitVariableExpr(self, ctx:SimpleLangParser.VariableExprContext):
+        pass
+
+
     # Enter a parse tree produced by SimpleLangParser#powerexpr.
     def enterPowerexpr(self, ctx:SimpleLangParser.PowerexprContext):
         pass

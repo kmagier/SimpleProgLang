@@ -39,6 +39,11 @@ class SimpleLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by SimpleLangParser#variableExpr.
+    def visitVariableExpr(self, ctx:SimpleLangParser.VariableExprContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by SimpleLangParser#powerexpr.
     def visitPowerexpr(self, ctx:SimpleLangParser.PowerexprContext):
         return self.visitChildren(ctx)
