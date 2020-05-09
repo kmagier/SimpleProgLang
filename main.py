@@ -15,6 +15,7 @@ if __name__ == '__main__':
     token_stream = CommonTokenStream(lexer)
     parser = SimpleLangParser(token_stream)
     tree = parser.init()
-
     visitor = Visitor()
     visitor.visit(tree)
+    print(visitor.generateLLVM())
+

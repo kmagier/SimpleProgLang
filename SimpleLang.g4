@@ -9,6 +9,7 @@ stat: expr           #exprlabel
 ;
 
 expr  : literal                        # literalexpr
+      | ID                             # variableExpr
       | 'sqrt' parentheses             # sqrtexpr
       | parentheses                    # parexpr
       | expr '^' expr                  # powerexpr
@@ -19,7 +20,6 @@ expr  : literal                        # literalexpr
 parentheses: '(' expr ')';
 
 literal: ('-'|'+')? NUMBER;
-
 NUMBER : [0-9]+('.'[0-9]+)?;
 MUL :   '*' ;
 DIV :   '/' ;

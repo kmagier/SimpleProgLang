@@ -1,11 +1,15 @@
 from SimpleLangVisitor import SimpleLangVisitor
 from SimpleLangParser import SimpleLangParser
 import math
+from Generator import LLVMGenerator
+import sys
+
 
 
 class Visitor(SimpleLangVisitor):
     def __init__(self):
         self.memory = {}
+        self.llvm = LLVMGenerator()
 
 
     def visitExprlabel(self, ctx):
@@ -15,26 +19,47 @@ class Visitor(SimpleLangVisitor):
     def visitPrint(self, ctx):
         id = ctx.ID().getText()
         if id not in self.memory.keys():
-            print('Error, no such ID')
+            self.error(ctx.start, "No such variable declared")
         else:
-            print(self.memory[id])
-        return 0
+            value = self.memory[id]
+            if isinstance(value, int):
+                self.llvm.printf_i32(str(id))
+            else:
+                self.llvm.printf_double(str(id))
+
 
 
     def visitAssign(self, ctx):
-        name = ctx.ID().getText()
+        id = ctx.ID().getText()
         value = self.visit(ctx.expr())
-        self.memory[name] = value
+        if id not in self.memory.keys():
+            if isinstance(value, int):
+                self.llvm.declare_i32(str(id))
+                self.llvm.assign_i32(str(id), str(value))
+                self.memory[id] = int(value)
+            else:
+                self.llvm.declare_double(str(id))
+                self.llvm.assign_double(str(id), str(value))
+                self.memory[id] = float(value)
+        else:
+            if isinstance(self.memory[id], int):
+                self.llvm.assign_i32(str(id), str(int(value)))
+                self.memory[id] = int(value)
+            elif isinstance(self.memory[id], float):
+                self.llvm.assign_double(str(id), str(float(value)))
+                self.memory[id] = float(value)
         return value
 
 
     def visitRead(self, ctx):
         id = ctx.ID().getText()
         if id not in self.memory.keys():
-            self.memory[id] = None
+            self.error(ctx.start, 'Variable must be declared first')
         else:
-            print(f"Error, VALUE {id} has been assigned.")
-        return 0
+            if isinstance(self.memory[id], int):
+                self.llvm.scanf_i32(str(id))
+            else:
+                self.llvm.scanf_double(str(id))
 
 
     def visitParexpr(self, ctx):
@@ -44,18 +69,31 @@ class Visitor(SimpleLangVisitor):
     def visitMuldivexpr(self, ctx):
         left = self.visit(ctx.expr(0))
         right = self.visit(ctx.expr(1))
+        if isinstance(left, int) and isinstance(right, int):
+            pass
+        elif isinstance(left, float) or isinstance(right, float):
+            left = float(left) if not isinstance(left, float) else left
+            right = float(right) if not isinstance(right, float) else right
         if ctx.op.type == SimpleLangParser.MUL:
+            if isinstance(left, int):
+                self.llvm.mult_i32(left, right)
+            else:
+                self.llvm.mult_double(left, right)
             return left*right
         elif ctx.op.type == SimpleLangParser.DIV:
+            if isinstance(left, int):
+                self.llvm.div_i32(left, right)
+            else:
+                self.llvm.div_double(left, right)
             return left/right
-        return 0
-
 
     def visitLiteralexpr(self, ctx):
         return self.visitChildren(ctx)
 
 
     def visitSqrtexpr(self, ctx):
+        value = float(self.visit(ctx.parentheses()))
+        self.llvm.sqrt(str(value))
         return math.sqrt(self.visit(ctx.parentheses()))
 
 
@@ -70,11 +108,25 @@ class Visitor(SimpleLangVisitor):
     def visitAddsubexpr(self, ctx):
         left = self.visit(ctx.expr(0))
         right = self.visit(ctx.expr(1))
+        if isinstance(left, int) and isinstance(right, int):
+            pass
+        elif isinstance(left, float) or isinstance(right, float):
+            left = float(left) if not isinstance(left, float) else left
+            right = float(right) if not isinstance(right, float) else right
         if ctx.op.type == SimpleLangParser.ADD:
-            return float(left) + float(right)
+            if isinstance(left, int):
+                self.llvm.add_i32(left, right)
+            else:
+                self.llvm.add_double(left, right)
+            return left+right
         elif ctx.op.type == SimpleLangParser.SUB:
-            return float(left) - float(right)
-        return 0
+            if isinstance(left, int):
+                self.llvm.sub_i32(left, right)
+            else:
+                self.llvm.sub_double(left, right)
+            return left-right
+
+
 
 
     def visitParentheses(self, ctx):
@@ -82,8 +134,24 @@ class Visitor(SimpleLangVisitor):
 
 
     def visitLiteral(self, ctx):
-        value = float(ctx.NUMBER().getText())
+        value = ctx.NUMBER().getText()
+        value = int(value) if value.isdigit() else float(value)
         if ctx.getChildCount()>1 and ctx.getChild(0).getText() == "-":
             return -value
         else:
             return value
+
+    def visitVariableExpr(self, ctx):
+        id = ctx.ID().getText()
+        if id not in self.memory.keys():
+            self.error(ctx.start, "No such variable declared")
+        else:
+            value = self.memory[id]
+            return value
+
+    def generateLLVM(self):
+        return self.llvm.generate()
+
+    def error(self, line, msg):
+        print(f"ERROR in: {line}, '{msg}'", file=sys.stderr)
+        sys.exit(1)
