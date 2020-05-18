@@ -1,8 +1,8 @@
 import sys
 from antlr4 import *
 from antlr4.InputStream import InputStream
-from SimpleLangLexer import SimpleLangLexer
-from SimpleLangParser import SimpleLangParser
+from lexer.SimpleLangLexer import SimpleLangLexer
+from parser.SimpleLangParser import SimpleLangParser
 from Visitor import Visitor
 
 if __name__ == '__main__':

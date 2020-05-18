@@ -1,9 +1,9 @@
 # Generated from /home/karol/Desktop/jfk/SimpleLang/SimpleLang.g4 by ANTLR 4.8
 from antlr4 import *
 if __name__ is not None and "." in __name__:
-    from .SimpleLangParser import SimpleLangParser
+    from parser.SimpleLangParser import SimpleLangParser
 else:
-    from SimpleLangParser import SimpleLangParser
+    from parser.SimpleLangParser import SimpleLangParser
 
 # This class defines a complete generic visitor for a parse tree produced by SimpleLangParser.
 

@@ -1,5 +1,5 @@
 from SimpleLangVisitor import SimpleLangVisitor
-from SimpleLangParser import SimpleLangParser
+from parser.SimpleLangParser import SimpleLangParser
 import math
 from Generator import LLVMGenerator
 import sys
