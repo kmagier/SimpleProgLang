@@ -1,14 +1,8 @@
 <<<<<<< HEAD
 /gen/
 /out/
-__pycache__/*
-=======
-/gen
-/out
 **/__pycache__/
->>>>>>> variablesExpr
 .idea/*
 /test/
 /.vscode/
-.gitignore
 SimpleLang.iml
