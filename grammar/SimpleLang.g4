@@ -1,11 +1,12 @@
 grammar SimpleLang;
 
-init: ( stat? NEWLINE )* ;
+block: ( stat? NEWLINE )* ;
 
-stat: expr           #exprlabel
-	| PRINT ID		 #print
-	| ID '=' expr	 #assign
-	| READ ID 		 #read
+stat: ifconditional                      #ifcondition
+    | REPEAT repetitions block ENDREPEAT #repeat
+	| PRINT (ID	| STRING)	             #print
+	| ID '=' expr	                     #assign
+	| READ ID 		                     #read
 ;
 
 expr  : literal                        # literalexpr
@@ -15,20 +16,47 @@ expr  : literal                        # literalexpr
       | expr '^' expr                  # powerexpr
       | expr parentheses               # implicitexpr
       | expr op=('*'|'/') expr         # muldivexpr
-      | expr op=('+'|'-') expr         # addsubexpr;
+      | expr op=('+'|'-') expr         # addsubexpr
+      | STRING                         # stringExpr;
+
+
+ifconditional: IF condition_block THEN blockif ENDIF;
+
+condition_block: gt | lt | eq | gte | lte;
+gt: ID GT (INT | FLOAT);
+lt: ID LT (INT | FLOAT);
+eq: ID EQ (INT | FLOAT);
+gte: ID GTE (INT | FLOAT);
+lte: ID LTE (INT | FLOAT);
+blockif: block;
 
 parentheses: '(' expr ')';
 
-literal: ('-'|'+')? NUMBER;
-NUMBER : [0-9]+('.'[0-9]+)?;
+repetitions: value;
+
+value: ID
+     | INT;
+
+literal: ('-'|'+')? (INT|FLOAT);
+INT: [0-9]+;
+FLOAT : [0-9]+ '.' [0-9]*;
 MUL :   '*' ;
 DIV :   '/' ;
 ADD :   '+' ;
 SUB :   '-' ;
+REPEAT: 'repeat';
+ENDREPEAT: 'endrepeat';
+IF:     'if';
+THEN: 'then';
+ENDIF: 'endif';
 PRINT:	'print' ;
 READ:	'read' ;
-
 ID:   ('a'..'z'|'A'..'Z')+;
-
+STRING :  '"' ( ~('\\'|'"') )* '"';
 NEWLINE:	'\r'? '\n';
+EQ: '==';
+LT: '<';
+LTE: '<=';
+GT: '>';
+GTE: '>=';
 WS:   (' '|'\t')+ -> skip;

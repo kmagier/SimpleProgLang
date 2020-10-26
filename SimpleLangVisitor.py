@@ -1,7 +1,7 @@
 # Generated from /home/karol/Desktop/jfk/SimpleLang/SimpleLang.g4 by ANTLR 4.8
 from antlr4 import *
 if __name__ is not None and "." in __name__:
-    from parser.SimpleLangParser import SimpleLangParser
+    from proj2.parser.SimpleLangParser import SimpleLangParser
 else:
     from parser.SimpleLangParser import SimpleLangParser
 
@@ -9,13 +9,18 @@ else:
 
 class SimpleLangVisitor(ParseTreeVisitor):
 
-    # Visit a parse tree produced by SimpleLangParser#init.
-    def visitInit(self, ctx:SimpleLangParser.InitContext):
+    # Visit a parse tree produced by SimpleLangParser#block.
+    def visitBlock(self, ctx:SimpleLangParser.BlockContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by SimpleLangParser#exprlabel.
-    def visitExprlabel(self, ctx:SimpleLangParser.ExprlabelContext):
+    # Visit a parse tree produced by SimpleLangParser#ifcondition.
+    def visitIfcondition(self, ctx:SimpleLangParser.IfconditionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SimpleLangParser#repeat.
+    def visitRepeat(self, ctx:SimpleLangParser.RepeatContext):
         return self.visitChildren(ctx)
 
 
@@ -36,6 +41,11 @@ class SimpleLangVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by SimpleLangParser#parexpr.
     def visitParexpr(self, ctx:SimpleLangParser.ParexprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SimpleLangParser#stringExpr.
+    def visitStringExpr(self, ctx:SimpleLangParser.StringExprContext):
         return self.visitChildren(ctx)
 
 
@@ -74,8 +84,58 @@ class SimpleLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by SimpleLangParser#ifconditional.
+    def visitIfconditional(self, ctx:SimpleLangParser.IfconditionalContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SimpleLangParser#condition_block.
+    def visitCondition_block(self, ctx:SimpleLangParser.Condition_blockContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SimpleLangParser#gt.
+    def visitGt(self, ctx:SimpleLangParser.GtContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SimpleLangParser#lt.
+    def visitLt(self, ctx:SimpleLangParser.LtContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SimpleLangParser#eq.
+    def visitEq(self, ctx:SimpleLangParser.EqContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SimpleLangParser#gte.
+    def visitGte(self, ctx:SimpleLangParser.GteContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SimpleLangParser#lte.
+    def visitLte(self, ctx:SimpleLangParser.LteContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SimpleLangParser#blockif.
+    def visitBlockif(self, ctx:SimpleLangParser.BlockifContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by SimpleLangParser#parentheses.
     def visitParentheses(self, ctx:SimpleLangParser.ParenthesesContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SimpleLangParser#repetitions.
+    def visitRepetitions(self, ctx:SimpleLangParser.RepetitionsContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SimpleLangParser#value.
+    def visitValue(self, ctx:SimpleLangParser.ValueContext):
         return self.visitChildren(ctx)
 
 

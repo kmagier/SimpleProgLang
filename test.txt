@@ -1,10 +1,6 @@
-x=5
-y=3
-z=x*y+3-4.5/2
+x=5.2
+y=6.8
+z=x-y
 print z
-read x
-print x
-read b
-print b
-
-
+c=z-55
+print c
